@@ -1,6 +1,7 @@
 ﻿using HRPortal.Application.DTOs.Department;
 using HRPortal.Application.Repository;
 using HRPortal.Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HRPortal.API.Controllers
@@ -46,6 +47,7 @@ namespace HRPortal.API.Controllers
         /// Yeni bir departman oluşturur.
         /// </summary>
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create([FromBody] DepartmentCreateDto dto)
         {
             var department = new Department
@@ -62,6 +64,7 @@ namespace HRPortal.API.Controllers
         /// Var olan departmanı günceller.
         /// </summary>
         [HttpPut("{id:guid}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Update(Guid id, [FromBody] DepartmentUpdateDto dto)
         {
             var department = await _departmentRepository.GetByIdAsync(id);
@@ -78,6 +81,7 @@ namespace HRPortal.API.Controllers
         /// Departmanı siler.
         /// </summary>
         [HttpDelete("{id:guid}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(Guid id)
         {
             await _departmentRepository.DeleteAsync(id);

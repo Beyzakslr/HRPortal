@@ -2,6 +2,7 @@
 using HRPortal.API.DTOs.Employee;
 using HRPortal.Application.Repository;
 using HRPortal.Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HRPortal.API.Controllers
@@ -45,6 +46,7 @@ namespace HRPortal.API.Controllers
         /// Employee oluşturur
         /// </summary>
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create([FromBody] EmployeeCreateDto dto)
         {
             var employee = _mapper.Map<Employee>(dto);
@@ -58,6 +60,7 @@ namespace HRPortal.API.Controllers
         /// Employee günceller
         /// </summary>
         [HttpPut("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] EmployeeUpdateDto dto)
         {
             var employee = await _employeeRepository.GetByIdAsync(id);
@@ -74,6 +77,7 @@ namespace HRPortal.API.Controllers
         /// Employee siler
         /// </summary>
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete([FromBody]Guid id)
         {
             var employee = await _employeeRepository.GetByIdAsync(id);

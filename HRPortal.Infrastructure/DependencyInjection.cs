@@ -26,6 +26,7 @@ namespace HRPortal.Infrastructure
             services.AddScoped<ILeaveRequestRepository, LeaveRequestRepository>();
             services.AddScoped<IPerformanceReviewRepository, PerformanceReviewRepository>();
             services.AddScoped<IPayrollRepository, PayrollRepository>();
+            services.AddScoped<IAttendanceRepository, AttendanceRepository>();
 
 
             return services;
