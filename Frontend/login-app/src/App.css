@@ -1,0 +1,112 @@
+body {
+  font-family: 'Arial', sans-serif;
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #42a5f5, #1976d2); /* Arka plan gradient */
+}
+
+.form-container {
+  background-color: #fff;
+  width: 100%;
+  max-width: 450px; /* Kart genişletildi */
+  padding: 60px 80px; /* Padding arttırıldı */
+  border-radius: 12px;
+  box-shadow: 0 12px 25px rgba(0,0,0,0.25);
+  transition: transform 0.4s ease, opacity 0.4s ease;
+  opacity: 0;
+  transform: translateY(30px);
+  animation: fadeInUp 0.6s forwards; /* Giriş animasyonu */
+}
+
+.form-container:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 16px 35px rgba(0,0,0,0.3);
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.form-container h2 {
+  text-align: center;
+  margin-bottom: 25px;
+  color: #333;
+  font-size: 26px;
+}
+
+.input-group {
+  position: relative;
+  margin-bottom: 18px;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 14px 45px 14px 14px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 15px;
+}
+
+.input-group i {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #888;
+}
+
+.input-group input:focus + i {
+  color: #1976d2;
+}
+
+.form-container button {
+  width: 110%;
+  padding: 14px;
+  background: linear-gradient(135deg, #1976d2, #42a5f5);
+  color: white;
+  border: none;
+  border-radius: 18px;
+  font-size: 17px;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.form-container button:hover {
+  background: linear-gradient(135deg, #155a9c, #1e88e5);
+  transform: translateY(-2px);
+}
+
+.form-container p {
+  text-align: center;
+  margin-top: 15px;
+  color: #1976d2;
+  cursor: pointer;
+  font-size: 15px;
+}
+
+.form-container p:hover {
+  text-decoration: underline;
+  color: #0d47a1;
+}
+
+/* Responsive */
+@media (max-width: 500px) {
+  .form-container {
+    margin: 20px;
+    padding: 30px 20px;
+  }
+  .form-container h2 {
+    font-size: 22px;
+  }
+  .form-container button {
+    font-size: 15px;
+    padding: 12px;
+  }
+}

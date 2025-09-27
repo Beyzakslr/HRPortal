@@ -95,6 +95,30 @@ namespace HRPortal.API.Controllers
 
             return Ok("Kayıt başarılı.");
         }
+
+
+        [HttpPost("update-password")]
+        public async Task<IActionResult> UpdatePassword([FromBody] UpdatePasswordRequest request)
+        {
+            if (request == null || string.IsNullOrEmpty(request.UserName) || string.IsNullOrEmpty(request.NewPassword))
+                return BadRequest("Eksik bilgi gönderildi.");
+
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Username == request.UserName);
+            if (user == null)
+                return NotFound("Kullanıcı bulunamadı.");
+
+            // Eski şifre kontrolü
+            if (!BCrypt.Net.BCrypt.Verify(request.OldPassword, user.PasswordHash))
+                return BadRequest("Mevcut şifre yanlış.");
+
+            // Yeni şifre hashlenip kaydediliyor
+            user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.NewPassword);
+            _context.Users.Update(user);
+            await _context.SaveChangesAsync();
+
+            return Ok("Şifre başarıyla güncellendi.");
+        }
+
     }
 }
 
