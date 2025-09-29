@@ -87,7 +87,34 @@ builder.Services.AddSwaggerGen(options =>
 });
 
 
+
+
+// CORS politikasýný burada tanýmlýyoruz
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowReactDev",
+        policy => policy
+            .WithOrigins("http://localhost:3000") // React dev server
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials()); // Gerekirse
+});
+
+
+
+
+builder.Services.AddControllers();
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
+
 var app = builder.Build();
+
+
+
+
+
 
 
 
@@ -98,10 +125,13 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+// DOÐRU SIRALAMA:
+// Önce CORS politikasýný uygula, sonra yönlendirme ve diðerlerini yap.
+app.UseCors("AllowReactDev");
+
 app.UseHttpsRedirection();
 
-
-app.UseAuthentication();   
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

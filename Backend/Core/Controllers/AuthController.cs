@@ -96,7 +96,11 @@ namespace HRPortal.API.Controllers
             return Ok("Kayıt başarılı.");
         }
 
-
+        /// <summary>
+        /// Şifre güncellemek için endpoint
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
         [HttpPost("update-password")]
         public async Task<IActionResult> UpdatePassword([FromBody] UpdatePasswordRequest request)
         {
