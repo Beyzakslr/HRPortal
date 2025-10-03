@@ -6,6 +6,7 @@ using HRPortal.Application.DTOs.JobPosition;
 using HRPortal.Application.DTOs.LeaveRequest;
 using HRPortal.Application.DTOs.Payroll;
 using HRPortal.Application.DTOs.PerformanceReview;
+using HRPortal.Application.DTOs.User;
 using HRPortal.Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -28,7 +29,7 @@ namespace HRPortal.Infrastructure.Mapping
 
             // Create DTO -> Entity
             CreateMap<EmployeeCreateDto, Employee>()
-                .ForMember(dest => dest.Id, opt => opt.Ignore()); 
+                .ForMember(dest => dest.Id, opt => opt.Ignore());
 
             // Update DTO -> Entity
             CreateMap<EmployeeUpdateDto, Employee>()
@@ -75,6 +76,19 @@ namespace HRPortal.Infrastructure.Mapping
 
             CreateMap<PayrollCreateDto, Payroll>();
             CreateMap<PayrollUpdateDto, Payroll>();
+
+            // Entity → DTO
+            CreateMap<User, UserDto>()
+                .ForMember(dest => dest.RoleName, opt => opt.MapFrom(src => src.Role != null ? src.Role.RoleName : ""));
+
+            // DTO → Entity
+            CreateMap<CreateUserDto, User>()
+                .ForMember(dest => dest.PasswordHash, opt => opt.Ignore()) // hash controller’da yapılacak
+                .ForMember(dest => dest.Id, opt => opt.Ignore());
+
+            CreateMap<UpdateUserDto, User>()
+                .ForMember(dest => dest.PasswordHash, opt => opt.Ignore());
         }
+
     }
 }

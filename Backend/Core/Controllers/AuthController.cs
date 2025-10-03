@@ -1,6 +1,7 @@
 ﻿using HRPortal.Application.DTOs.Login;
 using HRPortal.Domain.Entities;
 using HRPortal.Infrastructure.Context;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -23,6 +24,7 @@ namespace HRPortal.API.Controllers
             _config = config;
         }
 
+        [AllowAnonymous]
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequest request)
         {
@@ -41,7 +43,16 @@ namespace HRPortal.API.Controllers
             // 3. Token üret
             var token = GenerateToken(user);
 
-            return Ok(new { Token = token });
+            return Ok(new
+            {
+                token = token,
+                user = new
+                {
+                    id = user.Id,
+                    username = user.Username,
+                    role = user.Role!.RoleName
+                }
+            });
         }
 
         private string GenerateToken(User user)
@@ -112,8 +123,8 @@ namespace HRPortal.API.Controllers
                 return NotFound("Kullanıcı bulunamadı.");
 
             // Eski şifre kontrolü
-            if (!BCrypt.Net.BCrypt.Verify(request.OldPassword, user.PasswordHash))
-                return BadRequest("Mevcut şifre yanlış.");
+            //if (!BCrypt.Net.BCrypt.Verify(request.OldPassword, user.PasswordHash))
+            //    return BadRequest("Mevcut şifre yanlış.");
 
             // Yeni şifre hashlenip kaydediliyor
             user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.NewPassword);

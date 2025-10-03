@@ -1,28 +1,49 @@
+import { useNavigate } from "react-router-dom";
 import React, { useState } from "react";
-import { updatePassword } from "../services/authService";
+import axios from "axios";
 
 const UpdatePasswordForm = ({ switchForm, setNotification }) => {
+  const navigate = useNavigate();
   const [username, setUsername] = useState("");
   const [newPassword, setNewPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!username || !newPassword) {
-      setNotification({ message: "Tüm alanlar zorunludur.", type: "error" });
-      return;
-    }
-    try {
-      const data = await updatePassword({ username, newPassword });
-      if (data.error) throw new Error(data.error);
-      setNotification({
-        message: "Şifre güncellendi! Giriş yapabilirsiniz.",
-        type: "success",
-      });
-      switchForm("login");
-    } catch (err) {
-      setNotification({ message: err.message, type: "error" });
-    }
-  };
+ const handleSubmit = async (e) => {
+  e.preventDefault();
+
+  if (!username || !newPassword) {
+    setNotification({ message: "Tüm alanlar zorunludur.", type: "error" });
+    return;
+  }
+
+  setLoading(true);
+  try {
+    const res = await axios.post("https://localhost:7269/api/auth/update-password", {
+      username,
+      newPassword,
+    });
+    console.log(res.data);
+
+    // ✅ Başarılı güncelleme
+    setNotification({
+      message: "Şifre güncellendi! Giriş yapabilirsiniz.",
+      type: "success",
+    });
+
+    // login sayfasına yönlendir
+    switchForm ? switchForm("login") : navigate("/");
+
+  } catch (err) {
+    // ❌ Hatalı güncelleme
+    setNotification({
+      message: err.response?.data || "Şifre güncellenemedi.",
+      type: "error",
+    });
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   return (
     <div className="form-container">
@@ -56,13 +77,19 @@ const UpdatePasswordForm = ({ switchForm, setNotification }) => {
           <i className="fas fa-lock"></i>
         </div>
 
-        <button type="submit" className="btn-submit">
-          <i className="fas fa-sync-alt" style={{ marginRight: "6px" }}></i>
-          Güncelle
+        {/* ✅ Burada düzelttim */}
+        <button
+          type="submit"
+          className="btn-secondary"
+          style={{ marginTop: "10px" }}
+          disabled={loading}
+        >
+          {loading ? <span className="loading"></span> : "Şifre Güncelle"}
+       
         </button>
       </form>
 
-      <p onClick={() => switchForm("login")} className="switch-link">
+      <p onClick={() => (switchForm ? switchForm("login") : navigate("/"))} className="switch-link" >
         <i className="fas fa-sign-in-alt" style={{ marginRight: "6px" }}></i>
         Giriş Yap
       </p>

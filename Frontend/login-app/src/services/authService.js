@@ -58,10 +58,6 @@ export const loginUser = async (data) => {
   return await apiCall('login', data);
 };
 
-export const registerUser = async (data) => {
-  return await apiCall('register', data);
-};
-
 export const updatePassword = async (data) => {
   return await apiCall('update-password', data);
 };
