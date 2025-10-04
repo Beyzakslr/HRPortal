@@ -22,10 +22,10 @@ namespace HRPortal.Infrastructure.Mapping
         {
             // Entity -> DTO
             CreateMap<Employee, EmployeeDto>()
-                .ForMember(dest => dest.DepartmentName,
-                           opt => opt.MapFrom(src => src.Department != null ? src.Department.Name : null))
-                .ForMember(dest => dest.JobPositionName,
-                           opt => opt.MapFrom(src => src.JobPosition != null ? src.JobPosition.Title : null));
+            .ForMember(dest => dest.DepartmentName,
+                opt => opt.MapFrom(src => src.Department != null ? src.Department.Name : null))
+            .ForMember(dest => dest.JobPositionName,
+                opt => opt.MapFrom(src => src.JobPosition != null ? src.JobPosition.Title : null));
 
             // Create DTO -> Entity
             CreateMap<EmployeeCreateDto, Employee>()
@@ -53,7 +53,11 @@ namespace HRPortal.Infrastructure.Mapping
             CreateMap<JobPosition, JobPositionUpdateDto>().ReverseMap();
 
             // LeaveRequest
-            CreateMap<LeaveRequest, LeaveRequestDto>().ReverseMap();
+            CreateMap<LeaveRequest, LeaveRequestDto>()
+    .ForMember(dest => dest.EmployeeName,
+               opt => opt.MapFrom(src => src.Employee != null ? src.Employee.FullName : ""))
+            .ForMember(dest => dest.Status,
+               opt => opt.MapFrom(src => src.Status.ToString()));
             CreateMap<LeaveRequest, LeaveRequestCreateDto>().ReverseMap();
             CreateMap<LeaveRequest, LeaveRequestUpdateDto>().ReverseMap();
 

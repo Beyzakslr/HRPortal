@@ -1,0 +1,52 @@
+/* EmployeeList.module.css (sadece EmployeeList ve EmployeeTable için) */
+
+.employeeListContainer {
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.employeeListContainer h2 {
+  margin-top: 0;
+}
+
+.employeeTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.employeeTable th,
+.employeeTable td {
+  border: 1px solid #e0e0e0;
+  padding: 12px 15px;
+  text-align: left;
+}
+
+.employeeTable thead {
+  background-color: #fafafa;
+  font-weight: 600;
+}
+
+.employeeTable tbody tr:nth-of-type(even) {
+  background-color: #f7f7f7;
+}
+
+.employeeTable tbody tr:hover {
+  background-color: #eef5ff;
+}
+
+.statusMessage {
+  padding: 50px;
+  text-align: center;
+  font-size: 1.2rem;
+  color: #555;
+}
+
+.statusMessageError {
+  color: #c62828;
+  background-color: #ffcdd2;
+  border: 1px solid #c62828;
+  border-radius: 8px;
+}

@@ -8,9 +8,12 @@ import {
   FaUserClock 
 } from 'react-icons/fa'; // İkonları import ediyoruz
 
+
+import EmployeeList from "../components/EmployeeList/EmployeeList"; 
+import LeaveRequestList from "./LeaveRequestList/LeaveRequestList";
+
 export default function AdminDashboard() {
-  const user = { username: "demo_user" }; // localStorage'dan gelmiyorsa test için
-  // const user = JSON.parse(localStorage.getItem("user"));
+   const user = JSON.parse(localStorage.getItem("user"));
   const [activeItem, setActiveItem] = useState("Home Page"); // Tıklanan elemanı takip etmek için state
 
   const sidebarItems = [
@@ -31,6 +34,7 @@ export default function AdminDashboard() {
             <ul>
               <li><a href="/">Ana Sayfa</a></li>
               <li><a href="/settings">Ayarlar</a></li>
+              <li>Saat-Tarih</li>
               <div className="user-info">Hoşgeldin, {user?.username}</div>
             </ul>
           </nav>
@@ -38,6 +42,7 @@ export default function AdminDashboard() {
 
         {/* Dashboard */}
         <div className="dashboard">
+          
           {/* Sidebar */}
           <div className="sidebar">
             <ul>
@@ -58,11 +63,11 @@ export default function AdminDashboard() {
           <div className="main-content">
             <div className="content">
               <div className="card users">
-                <h3>Users</h3>
+                <h3>Toplam Çalışan Sayısı</h3>
                 <p>150</p>
               </div>
               <div className="card orders">
-                <h3>Orders</h3>
+                <h3>İzinli Çalışan Sayısı</h3>
                 <p>320</p>
               </div>
               <div className="card revenue">
@@ -70,8 +75,26 @@ export default function AdminDashboard() {
                 <p>$12,400</p>
               </div>
             </div>
+
+           {activeItem === "Employees" && (
+            <EmployeeList /> 
+          )}
+
+          {activeItem === "Leave Requests" && (
+            <LeaveRequestList />
+          )}
+
+          {activeItem === "Payrolls" && (
+            <div className="status-message">Maaş bordroları burada listelenecek.</div>
+          )}
+
+          {activeItem === "Attendances" && (
+            <div className="status-message">Devam/katılım kayıtları burada listelenecek.</div>
+          )}
           </div>
         </div>
+
+
 
         {/* Footer */}
         <footer className="footer">

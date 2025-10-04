@@ -1,9 +1,12 @@
 ﻿using AutoMapper;
 using HRPortal.API.DTOs.Employee;
+using HRPortal.Application.DTOs.User;
 using HRPortal.Application.Repository;
 using HRPortal.Domain.Entities;
+using HRPortal.Infrastructure.Context;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace HRPortal.API.Controllers
 {
@@ -18,15 +21,18 @@ namespace HRPortal.API.Controllers
         private readonly IEmployeeRepository _employeeRepository;
         private readonly IGenericRepository<Employee> _genericRepository;
         private readonly IMapper _mapper;
+        private readonly HRContext _context;
 
         public EmployeesController(
      IEmployeeRepository employeeRepository,
      IGenericRepository<Employee> genericRepository,
-     IMapper mapper)
+     IMapper mapper,
+     HRContext context)
         {
             _employeeRepository = employeeRepository ?? throw new ArgumentNullException(nameof(employeeRepository));
             _genericRepository = genericRepository ?? throw new ArgumentNullException(nameof(genericRepository));
             _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+            _context = context;
         }
 
         /// <summary>
@@ -84,6 +90,25 @@ namespace HRPortal.API.Controllers
             if (employee == null) return NotFound();
             await _employeeRepository.DeleteAsync(id);
             return NoContent();
+        }
+
+
+
+        /// <summary>
+        ///Bütün Employee listeler
+        /// </summary>
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> GetAll()
+        {
+            var employees = await _context.Employees
+                                 .Include(e => e.Department)
+                                 .Include(e => e.JobPosition)
+                                 .ToListAsync();
+
+            var employeeDtos = _mapper.Map<List<EmployeeDto>>(employees);
+
+            return Ok(employeeDtos);
         }
     }
 }
