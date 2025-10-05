@@ -10,6 +10,7 @@ namespace HRPortal.Application.DTOs.Payroll
     {
         public Guid Id { get; set; }
         public Guid EmployeeId { get; set; }
+        public string FullName { get; set; }
         public DateTime PayDate { get; set; }
         public decimal BaseSalary { get; set; }
         public decimal Bonus { get; set; }

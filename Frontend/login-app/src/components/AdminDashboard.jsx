@@ -11,6 +11,7 @@ import {
 
 import EmployeeList from "../components/EmployeeList/EmployeeList"; 
 import LeaveRequestList from "./LeaveRequestList/LeaveRequestList";
+import PayrollList from '../components/PayrollList/PayrollList';
 
 export default function AdminDashboard() {
    const user = JSON.parse(localStorage.getItem("user"));
@@ -85,7 +86,7 @@ export default function AdminDashboard() {
           )}
 
           {activeItem === "Payrolls" && (
-            <div className="status-message">Maaş bordroları burada listelenecek.</div>
+            <PayrollList />
           )}
 
           {activeItem === "Attendances" && (

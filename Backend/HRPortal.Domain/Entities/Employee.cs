@@ -20,5 +20,9 @@ namespace HRPortal.Domain.Entities
 
         public Department? Department { get; set; }
         public JobPosition? JobPosition { get; set; }
+
+
+
+        public ICollection<LeaveRequest> LeaveRequests { get; set; } = new List<LeaveRequest>();
     }
 }

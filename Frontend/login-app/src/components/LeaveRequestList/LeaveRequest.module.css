@@ -59,3 +59,16 @@
 .rejectBtn:hover {
   background-color: #e53935;
 }
+
+.deleteBtn {
+  background-color: #f41505;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.deleteBtn:hover {
+  background-color: #5b0302;
+}

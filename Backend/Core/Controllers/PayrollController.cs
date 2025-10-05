@@ -22,7 +22,7 @@ namespace HRPortal.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var payrolls = await _payrollRepository.GetAllAsync();
+            var payrolls = await _payrollRepository.GetAllWithEmployee();
             return Ok(_mapper.Map<IEnumerable<PayrollDto>>(payrolls));
         }
 

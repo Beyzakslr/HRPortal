@@ -1,4 +1,5 @@
-﻿using HRPortal.Domain.Entities;
+﻿using HRPortal.Application.DTOs.LeaveRequest;
+using HRPortal.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,5 +13,6 @@ namespace HRPortal.Application.Repository
         Task<IEnumerable<LeaveRequest>> GetByEmployeeIdAsync(Guid employeeId);
         Task<IEnumerable<LeaveRequest>> GetByStatusAsync(Domain.Enums.LeaveStatus status);
         Task ApproveLeaveRequestAsync(Guid id);
+        Task<List<LeaveRequestDto>> GetAllWithEmployeeAsync();
     }
 }

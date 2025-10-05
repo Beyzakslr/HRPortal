@@ -10,5 +10,6 @@ namespace HRPortal.Application.Repository
     public interface IPayrollRepository:IGenericRepository<Payroll>
     {
         Task<IEnumerable<Payroll>> GetByEmployeeIdAsync(Guid employeeId);
+        Task<IEnumerable<Payroll>> GetAllWithEmployee();
     }
 }

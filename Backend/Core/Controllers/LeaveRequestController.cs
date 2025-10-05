@@ -29,7 +29,7 @@ namespace HRPortal.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var leaveRequests = await _leaveRequestRepository.GetAllAsync();
+            var leaveRequests = await _leaveRequestRepository.GetAllWithEmployeeAsync();
             return Ok(leaveRequests);
         }
 

@@ -18,6 +18,13 @@ namespace HRPortal.Infrastructure.Repository
             _context = context;
         }
 
+        public async Task<IEnumerable<Payroll>> GetAllWithEmployee()
+        {
+            return await _context.Payrolls
+        .Include(p => p.Employee)
+        .ToListAsync();
+        }
+
         public async Task<IEnumerable<Payroll>> GetByEmployeeIdAsync(Guid employeeId)
         {
             return await _context.Payrolls

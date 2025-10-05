@@ -15,7 +15,6 @@ namespace HRPortal.Domain.Entities
         public DateTime EndDate { get; set; }
         public string Reason { get; set; } = string.Empty;
         public LeaveStatus Status { get; set; } = LeaveStatus.Pending;
-
         public Employee? Employee { get; set; }
     }
 }

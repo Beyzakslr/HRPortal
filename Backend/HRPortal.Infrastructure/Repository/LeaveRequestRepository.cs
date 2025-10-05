@@ -1,4 +1,7 @@
-﻿using HRPortal.Application.Repository;
+﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using HRPortal.Application.DTOs.LeaveRequest;
+using HRPortal.Application.Repository;
 using HRPortal.Domain.Entities;
 using HRPortal.Domain.Enums;
 using HRPortal.Infrastructure.Context;
@@ -13,8 +16,10 @@ namespace HRPortal.Infrastructure.Repository
 {
     public class LeaveRequestRepository : GenericRepository<LeaveRequest>, ILeaveRequestRepository
     {
-        public LeaveRequestRepository(HRContext context) : base(context)
+        public readonly IMapper _mapper;
+        public LeaveRequestRepository(HRContext context, IMapper mapper = null) : base(context)
         {
+            _mapper = mapper;
         }
 
         public async Task ApproveLeaveRequestAsync(Guid id)
@@ -24,6 +29,15 @@ namespace HRPortal.Infrastructure.Repository
 
             leaveRequest.Status = LeaveStatus.Approved;
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<List<LeaveRequestDto>> GetAllWithEmployeeAsync()
+        {
+            var leaveRequests = await _context.LeaveRequests
+        .Include(l => l.Employee)
+        .ToListAsync();
+
+            return _mapper.Map<List<LeaveRequestDto>>(leaveRequests);
         }
 
         public async Task<IEnumerable<LeaveRequest>> GetByEmployeeIdAsync(Guid employeeId)

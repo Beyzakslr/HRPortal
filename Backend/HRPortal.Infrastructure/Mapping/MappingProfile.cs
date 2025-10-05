@@ -54,10 +54,11 @@ namespace HRPortal.Infrastructure.Mapping
 
             // LeaveRequest
             CreateMap<LeaveRequest, LeaveRequestDto>()
-    .ForMember(dest => dest.EmployeeName,
-               opt => opt.MapFrom(src => src.Employee != null ? src.Employee.FullName : ""))
-            .ForMember(dest => dest.Status,
-               opt => opt.MapFrom(src => src.Status.ToString()));
+    .ForMember(dest => dest.FullName,
+        opt => opt.MapFrom(src => src.Employee != null
+            ? src.Employee.FullName: ""))
+    .ForMember(dest => dest.Status,
+        opt => opt.MapFrom(src => src.Status));
             CreateMap<LeaveRequest, LeaveRequestCreateDto>().ReverseMap();
             CreateMap<LeaveRequest, LeaveRequestUpdateDto>().ReverseMap();
 
@@ -76,7 +77,9 @@ namespace HRPortal.Infrastructure.Mapping
             // Payroll
             CreateMap<Payroll, PayrollDto>()
                 .ForMember(dest => dest.NetSalary,
-                           opt => opt.MapFrom(src => src.BaseSalary + src.Bonus - src.Deductions));
+                           opt => opt.MapFrom(src => src.BaseSalary + src.Bonus - src.Deductions))
+                    .ForMember(dest => dest.FullName, opt => opt.MapFrom(src =>
+        src.Employee != null ? src.Employee.FullName : string.Empty));
 
             CreateMap<PayrollCreateDto, Payroll>();
             CreateMap<PayrollUpdateDto, Payroll>();
