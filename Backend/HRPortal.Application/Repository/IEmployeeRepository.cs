@@ -10,5 +10,7 @@ namespace HRPortal.Application.Repository
     public interface IEmployeeRepository: IGenericRepository<Employee>
     {
         Task<Employee> GetByEmailAsync(string email);
+        Task<int> GetTotalEmployeeCountAsync();
+        Task<int> GetOnLeaveEmployeeCountAsync();
     }
 }

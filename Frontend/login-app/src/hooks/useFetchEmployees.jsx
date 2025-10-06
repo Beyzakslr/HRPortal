@@ -4,6 +4,8 @@ import axios from "axios";
 const useFetchEmployees = () => {
   const [employees, setEmployees] = useState([]);
   const [loading, setLoading] = useState(true);
+   const [totalEmployees, setTotalEmployees] = useState(0);
+  const [onLeaveEmployees, setOnLeaveEmployees] = useState(0);
   const [error, setError] = useState(null);
 
   useEffect(() => {
@@ -15,7 +17,24 @@ const useFetchEmployees = () => {
             Authorization: `Bearer ${token}` // token ekleniyor
           }
         });
+        console.log("API Response:", res);
         setEmployees(res.data);
+        
+
+        // İstatistikleri getir
+        const [totalRes, leaveRes] = await Promise.all([
+          axios.get("https://localhost:7269/api/Employees/Count", {
+            headers: { Authorization: `Bearer ${token}` }
+          }),
+          axios.get("https://localhost:7269/api/Employees/LeaveCount", {
+            headers: { Authorization: `Bearer ${token}` }
+          })
+        ]);
+
+        setTotalEmployees(totalRes.data);
+        setOnLeaveEmployees(leaveRes.data);
+
+
       } catch (err) {
         console.error(err);
         setError("Çalışanlar yüklenemedi.");
@@ -27,7 +46,7 @@ const useFetchEmployees = () => {
     fetchData();
   }, []);
 
-  return { employees, loading, error };
+  return { employees,totalEmployees, onLeaveEmployees, loading, error };
 };
 
 export default useFetchEmployees;

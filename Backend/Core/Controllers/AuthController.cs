@@ -134,6 +134,13 @@ namespace HRPortal.API.Controllers
             return Ok("Şifre başarıyla güncellendi.");
         }
 
+        [HttpPost("logout")]
+        [Authorize]
+        public IActionResult Logout()
+        {
+            return Ok("Başarıyla çıkış yapıldı.");
+        }
+
     }
 }
 

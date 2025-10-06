@@ -110,5 +110,28 @@ namespace HRPortal.API.Controllers
 
             return Ok(employeeDtos);
         }
+
+        /// <summary>
+        /// Toplam çalışan sayısını getiren endpoint
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("Count")]
+        public async Task<IActionResult> GetEmployeeCount()
+        {
+            var totalCount = await _employeeRepository.GetTotalEmployeeCountAsync();
+            return Ok(new { totalEmployees = totalCount });
+        }
+
+
+        /// <summary>
+        /// Toplam izinli çalışan sayısını getiren endpoint
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("LeaveCount")]
+        public async Task<IActionResult> GetOnLeaveEmployeeCount()
+        {
+            var totalCount = await _employeeRepository.GetOnLeaveEmployeeCountAsync();
+            return Ok(new { totalEmployees = totalCount });
+        }
     }
 }

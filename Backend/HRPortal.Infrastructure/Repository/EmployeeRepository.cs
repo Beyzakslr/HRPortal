@@ -18,5 +18,23 @@ namespace HRPortal.Infrastructure.Repository
         {
             return await _dbSet.FirstOrDefaultAsync(e => e.Email == email);
         }
+
+        public async Task<int> GetOnLeaveEmployeeCountAsync()
+        {
+            var today = DateTime.UtcNow.Date;
+
+            // Aktif izinli çalışanları bul: İzin başlangıcı geçmiş, bitişi henüz gelmemiş
+            var onLeaveEmployees = await _context.Employees
+                .Where(e => e.LeaveRequests
+                    .Any(lr => lr.StartDate <= today && lr.EndDate >= today && lr.Status == Domain.Enums.LeaveStatus.Approved))
+                .CountAsync();
+
+            return onLeaveEmployees;
+        }
+
+        public async Task<int> GetTotalEmployeeCountAsync()
+        {
+            return await _context.Employees.CountAsync();
+        }
     }
 }
