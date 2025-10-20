@@ -17,7 +17,7 @@ const useFetchEmployees = () => {
             Authorization: `Bearer ${token}` // token ekleniyor
           }
         });
-        console.log("API Response:", res);
+        
         setEmployees(res.data);
         
 

@@ -22,6 +22,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddInfrastructure(builder.Configuration.GetConnectionString("DefaultConnection"));
 
 
+builder.Services.AddHttpClient();
+
 
 builder.Services.AddAutoMapper(typeof(MappingProfile).Assembly);
 
@@ -111,11 +113,6 @@ builder.Services.AddSwaggerGen();
 
 
 var app = builder.Build();
-
-
-
-
-
 
 
 

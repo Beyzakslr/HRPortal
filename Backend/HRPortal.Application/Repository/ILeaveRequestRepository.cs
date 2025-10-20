@@ -14,5 +14,7 @@ namespace HRPortal.Application.Repository
         Task<IEnumerable<LeaveRequest>> GetByStatusAsync(Domain.Enums.LeaveStatus status);
         Task ApproveLeaveRequestAsync(Guid id);
         Task<List<LeaveRequestDto>> GetAllWithEmployeeAsync();
+
+
     }
 }

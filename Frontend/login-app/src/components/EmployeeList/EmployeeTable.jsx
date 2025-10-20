@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './EmployeeList.module.css';
 
-const EmployeeTable = ({ employees }) => {
+const EmployeeTable = ({ employees, onEdit, onDelete }) => {
   return (
     <table className={styles.employeeTable}>
       <thead>
@@ -27,7 +27,22 @@ const EmployeeTable = ({ employees }) => {
               <td>{employee.fullName}</td>
               <td>{employee.email}</td>
               <td>{employee.departmentName}</td>
-              <td>{employee.jobPositionName}</td>
+              <td>
+  <div className={styles.actionButtons}>
+    <button
+      className={styles.editButton}
+      onClick={() => onEdit(employee)}
+    >
+      Düzenle
+    </button>
+    <button
+      className={styles.deleteButton}
+      onClick={() => onDelete(employee.id)}
+    >
+      Sil
+    </button>
+  </div>
+</td>
             </tr>
           ))
         )}

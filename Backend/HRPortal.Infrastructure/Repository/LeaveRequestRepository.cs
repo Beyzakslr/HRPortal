@@ -49,5 +49,7 @@ namespace HRPortal.Infrastructure.Repository
         {
             return await _dbSet.Where(lr => lr.Status == status).ToListAsync();
         }
+
+
     }
 }

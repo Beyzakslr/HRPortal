@@ -21,16 +21,20 @@ namespace HRPortal.Infrastructure.Repository
 
         public async Task<int> GetOnLeaveEmployeeCountAsync()
         {
-            var today = DateTime.UtcNow.Date;
+            var today = DateTime.UtcNow.Date; // ✅ yerel saat bazlı
 
-            // Aktif izinli çalışanları bul: İzin başlangıcı geçmiş, bitişi henüz gelmemiş
-            var onLeaveEmployees = await _context.Employees
-                .Where(e => e.LeaveRequests
-                    .Any(lr => lr.StartDate <= today && lr.EndDate >= today && lr.Status == Domain.Enums.LeaveStatus.Approved))
+            var onLeaveCount = await _context.LeaveRequests
+                .Where(lr => lr.StartDate.Date <= today &&
+                             lr.EndDate.Date >= today &&
+                             lr.Status == Domain.Enums.LeaveStatus.Approved) // ✅ enum eşleşmesi
+                .Select(lr => lr.EmployeeId)
+                .Distinct()
                 .CountAsync();
 
-            return onLeaveEmployees;
+            return onLeaveCount;
         }
+    
+
 
         public async Task<int> GetTotalEmployeeCountAsync()
         {

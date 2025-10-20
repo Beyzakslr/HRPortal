@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState } from "react";
 
 import '../App.css'; // Oluşturduğumuz CSS dosyasını import ediyoruz
 import { 
@@ -16,12 +16,13 @@ import LeaveRequestList from "./LeaveRequestList/LeaveRequestList";
 import PayrollList from '../components/PayrollList/PayrollList';
 import AttendanceList from "../components/AttendanceList/AttendanceList";
 import useFetchEmployees from "../hooks/useFetchEmployees";
+import Weather from "./Weather";  
 
 export default function AdminDashboard() {
    const user = JSON.parse(localStorage.getItem("user"));
   const [activeItem, setActiveItem] = useState("Home Page"); // Tıklanan elemanı takip etmek için state
 
-  const { totalEmployees, onLeaveEmployees, loading, error } = useFetchEmployees();
+  const { totalEmployees, onLeaveEmployees, loading } = useFetchEmployees();
 
 const handleLogout = async () => {
     try {
@@ -40,7 +41,7 @@ const handleLogout = async () => {
       localStorage.removeItem("user");
 
       // Login sayfasına yönlendir
-      window.location.href = "/login";
+      window.location.href = "/";
     } catch (err) {
       console.error("Logout sırasında hata oluştu:", err);
     }
@@ -51,7 +52,8 @@ const handleLogout = async () => {
     { name: "Employees", icon: <FaUsers /> },
     { name: "Leave Requests", icon: <FaCalendarTimes /> },
     { name: "Payrolls", icon: <FaMoneyBillWave /> },
-    { name: "Attendances", icon: <FaUserClock /> },
+    { name: "Attendances", icon: <FaUserClock /> }
+   
   ];
 
   return (
@@ -111,17 +113,23 @@ const handleLogout = async () => {
 </div>
 <div className="card orders">
   <h3>İzinli Çalışan Sayısı</h3>
-  {loading ? <p>Yükleniyor...</p> : <p>{onLeaveEmployees.totalOnLeaveEmployees}</p>}
+  {loading ? <p>Yükleniyor...</p> : <p>{onLeaveEmployees.totalEmployees}</p>}
 </div>
 {/* {error && <p style={{ color: "red" }}>
   Hata: {error}</p>} */}
 
               <div className="card revenue">
-                <h3>Tarih-Saat-Hava durumu</h3>
-                <p>$12,400</p>
+                <h3>Hava Durumu</h3>
+                <Weather sehir="Istanbul" /> 
               </div>
             </div>
             <br></br>
+            {activeItem === "Home Page" && (
+            <div>
+              <h2>Hoşgeldiniz, {user?.username}!</h2>
+              <p>İK Portaline giriş yaptınız. Sol menüden işlemlerinizi seçebilirsiniz.</p>
+            </div>
+          )}
 
            {activeItem === "Employees" && (
             <EmployeeList /> 

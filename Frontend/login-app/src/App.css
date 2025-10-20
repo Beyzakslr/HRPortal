@@ -225,7 +225,7 @@ body {
 
 .card p {
   margin: 0;
-  font-size: 2.2rem;
+  font-size: 100%;
   font-weight: 700;
   color: var(--text-dark);
 }
@@ -277,7 +277,6 @@ body {
     border-bottom-color: var(--primary-yellow);
   }
 
-  .main-content {
-    padding: 20px;
-  }
+
+
 }
