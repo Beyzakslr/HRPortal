@@ -29,12 +29,31 @@ namespace HRPortal.Infrastructure.Mapping
 
             // Create DTO -> Entity
             CreateMap<EmployeeCreateDto, Employee>()
-                .ForMember(dest => dest.Id, opt => opt.Ignore());
+          .ForMember(
+        dest => dest.DepartmentId, 
+        opt => opt.Ignore()        
+    )
+    .ForMember(
+        dest => dest.JobPositionId, 
+        opt => opt.Ignore()         
+    )
+    .ForMember(dest => dest.Department, opt => opt.Ignore())
+    .ForMember(dest => dest.JobPosition, opt => opt.Ignore());
 
             // Update DTO -> Entity
             CreateMap<EmployeeUpdateDto, Employee>()
                 .ForMember(dest => dest.Id, opt => opt.Ignore())
-                .ForMember(dest => dest.EmployeeNumber, opt => opt.Ignore());
+                .ForMember(dest => dest.EmployeeNumber, opt => opt.Ignore())
+                          .ForMember(
+        dest => dest.DepartmentId,
+        opt => opt.Ignore()
+    )
+    .ForMember(
+        dest => dest.JobPositionId,
+        opt => opt.Ignore()
+    )
+    .ForMember(dest => dest.Department, opt => opt.Ignore())
+    .ForMember(dest => dest.JobPosition, opt => opt.Ignore());
 
             // Entity → DTO
             CreateMap<Department, DepartmentDto>()

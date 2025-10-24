@@ -11,12 +11,13 @@ const EmployeeTable = ({ employees, onEdit, onDelete }) => {
           <th>E-posta</th>
           <th>Departman</th>
           <th>Pozisyon</th>
+          <th>Düzenleme</th>
         </tr>
       </thead>
       <tbody>
         {employees.length === 0 ? (
           <tr>
-            <td colSpan="5" className={styles.statusMessage} style={{ textAlign: 'center' }}>
+            <td colSpan="6" className={styles.statusMessage} style={{ textAlign: 'center' }}>
               Gösterilecek çalışan bulunamadı.
             </td>
           </tr>
@@ -27,6 +28,7 @@ const EmployeeTable = ({ employees, onEdit, onDelete }) => {
               <td>{employee.fullName}</td>
               <td>{employee.email}</td>
               <td>{employee.departmentName}</td>
+              <td>{employee.jobPositionName}</td>
               <td>
   <div className={styles.actionButtons}>
     <button
@@ -42,8 +44,10 @@ const EmployeeTable = ({ employees, onEdit, onDelete }) => {
       Sil
     </button>
   </div>
-</td>
+ </td>
+
             </tr>
+            
           ))
         )}
       </tbody>

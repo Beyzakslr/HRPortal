@@ -25,20 +25,36 @@ const EmployeeList = () => {
     setShowModal(false);
   };
 
-  const handleDelete = async (id) => {
+
+const handleDelete = async (id) => {
     const confirm = window.confirm("Bu çalışanı silmek istediğine emin misin?");
     if (!confirm) return;
 
     const token = localStorage.getItem("token");
+    
+    if (!token) {
+      alert("Yetkilendirme hatası: Token bulunamadı. Lütfen giriş yapın.");
+      return;
+    }
+    
     try {
+      // ÇÖZÜM: Config objesine "data: null" ekleyin
       await axios.delete(`https://localhost:7269/api/Employees/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
+        data: {} // Bu satır, Axios'un Content-Type başlığı göndermesini engeller
       });
-      alert("Çalışan silindi!");
-      setRefresh(!refresh); // Listeyi yenile
+
+      alert("Çalışan başarıyla silindi!");
+      setRefresh(!refresh);
+      
     } catch (err) {
-      console.error(err);
-      alert("Silme işlemi başarısız!");
+      console.error("Silme Hatası:", err);
+      if (err.response?.status === 401) {
+        alert("Silme işlemi başarısız: Yetkiniz yok veya oturum süreniz doldu!");
+      } else {
+        // 415 hatası veya diğer hatalar için
+        alert(`Silme işlemi başarısız! Hata: ${err.response?.statusText || err.message} (Kod: ${err.response?.status || 'Bilinmiyor'})`);
+      }
     }
   };
 
@@ -82,5 +98,4 @@ const EmployeeList = () => {
     </div>
   );
 };
-
 export default EmployeeList;

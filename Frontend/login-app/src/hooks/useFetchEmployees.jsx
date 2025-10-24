@@ -1,13 +1,16 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-const useFetchEmployees = () => {
+const useFetchEmployees = (refresh) => {
   const [employees, setEmployees] = useState([]);
   const [loading, setLoading] = useState(true);
-   const [totalEmployees, setTotalEmployees] = useState(0);
+  const [totalEmployees, setTotalEmployees] = useState(0);
   const [onLeaveEmployees, setOnLeaveEmployees] = useState(0);
   const [error, setError] = useState(null);
 
+
+
+  
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -44,9 +47,9 @@ const useFetchEmployees = () => {
     };
 
     fetchData();
-  }, []);
+  }, [refresh]);
 
-  return { employees,totalEmployees, onLeaveEmployees, loading, error };
+  return { employees,totalEmployees, onLeaveEmployees, loading, error }; 
 };
 
 export default useFetchEmployees;

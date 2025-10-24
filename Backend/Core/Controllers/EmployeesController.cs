@@ -55,7 +55,34 @@ namespace HRPortal.API.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create([FromBody] EmployeeCreateDto dto)
         {
+
+            var department = await _context.Departments
+                .FirstOrDefaultAsync(d => d.Name.Trim().ToLower() == dto.DepartmentName.Trim().ToLower());
+
+            if (department == null)
+            {
+                ModelState.AddModelError(nameof(dto.DepartmentName), $"'{dto.DepartmentName.Trim()}' adında bir departman bulunamadı.");
+                return BadRequest(ModelState);
+            }
+
+
+            var positionNameFromDto = dto.JobPositionName.Trim().ToLower();
+            var jobPosition = await _context.JobPositions
+                .FirstOrDefaultAsync(jp =>
+                    jp.Title.Trim().ToLower() == positionNameFromDto
+                );
+
+            if (jobPosition == null)
+            {
+                ModelState.AddModelError(nameof(dto.JobPositionName), $"'{positionNameFromDto}' adında bir pozisyon bulunamadı.");
+                return BadRequest(ModelState);
+            }
+
             var employee = _mapper.Map<Employee>(dto);
+
+            employee.DepartmentId = department.Id;
+            employee.JobPositionId = jobPosition.Id; 
+
             await _genericRepository.AddAsync(employee);
 
             var resultDto = _mapper.Map<EmployeeDto>(employee);
@@ -69,14 +96,43 @@ namespace HRPortal.API.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] EmployeeUpdateDto dto)
         {
-            var employee = await _employeeRepository.GetByIdAsync(id);
-            if (employee == null) return NotFound();
+            var employee = await _context.Employees.FindAsync(id);
+
+            if (employee == null)
+            {
+                return NotFound($"ID'si {id} olan çalışan bulunamadı.");
+            }
+            var department = await _context.Departments
+                .FirstOrDefaultAsync(d => d.Name.Trim().ToLower() == dto.DepartmentName.Trim().ToLower());
+
+            if (department == null)
+            {
+                ModelState.AddModelError(nameof(dto.DepartmentName), $"'{dto.DepartmentName.Trim()}' adında bir departman bulunamadı.");
+                return BadRequest(ModelState);
+            }
+
+            var positionNameFromDto = dto.JobPositionName.Trim().ToLower();
+            var jobPosition = await _context.JobPositions
+                .FirstOrDefaultAsync(jp =>
+                    jp.Title.Trim().ToLower() == positionNameFromDto 
+                );
+
+            if (jobPosition == null)
+            {
+                ModelState.AddModelError(nameof(dto.JobPositionName), $"'{positionNameFromDto}' adında bir pozisyon bulunamadı.");
+                return BadRequest(ModelState);
+            }
 
             _mapper.Map(dto, employee);
+
+            employee.DepartmentId = department.Id;
+            employee.JobPositionId = jobPosition.Id;
+            await _context.SaveChangesAsync();
+
             var resultDto = _mapper.Map<EmployeeDto>(employee);
             return Ok(resultDto);
 
-            
+
         }
 
         /// <summary>
@@ -84,11 +140,12 @@ namespace HRPortal.API.Controllers
         /// </summary>
         [HttpDelete("{id}")]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> Delete([FromBody]Guid id)
+        public async Task<IActionResult> Delete([FromRoute] Guid id)
         {
             var employee = await _employeeRepository.GetByIdAsync(id);
-            if (employee == null) return NotFound();
+            if (employee == null) return NotFound($"ID'si {id} olan çalışan bulunamadı.");
             await _employeeRepository.DeleteAsync(id);
+            await _context.SaveChangesAsync();
             return NoContent();
         }
 

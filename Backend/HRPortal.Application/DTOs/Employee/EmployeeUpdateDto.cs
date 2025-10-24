@@ -7,7 +7,7 @@
         public string Email { get; set; } = string.Empty;
         public string Phone { get; set; } = string.Empty;
         public DateTime HireDate { get; set; }
-        public Guid DepartmentId { get; set; }
-        public Guid JobPositionId { get; set; }
+        public string DepartmentName { get; set; } = string.Empty;
+        public string JobPositionName { get; set; } = string.Empty;
     }
 }
