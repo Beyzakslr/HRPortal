@@ -63,6 +63,12 @@ const JobPositionList = () => {
   return (
     <div className={styles.employeeListContainer}> {/* Bu stil adını değiştirebilirsiniz */}
       
+    <tr>
+        <div>
+    <h3 style={{ color: "red" }} className={styles.header}>Ücret bilgisi minimum değer olarak gösterilmektedir. Kişiye göre değişmektedir.</h3>
+</div>
+    </tr>
+
       <div className={styles.headerContainer}>
         <h2>Pozisyon Listesi</h2>
         <button className={styles.addButton} onClick={handleAdd}>

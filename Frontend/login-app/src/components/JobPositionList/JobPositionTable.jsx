@@ -1,13 +1,18 @@
 import React from "react";
 import styles from "./JobPositionList.module.css"; 
 
+
+
+
 const JobPositionTable = ({ jobPositions, onEdit, onDelete }) => {
   if (!jobPositions || jobPositions.length === 0) {
     return <p className={styles.statusMessage}>Gösterilecek pozisyon bulunamadı.</p>;
   }
 
+
   return (
     <table className={styles.jobPositionTable}> 
+
       <thead>
         <tr>
           <th>Pozisyon Adı</th>
