@@ -6,7 +6,9 @@ import {
   FaUsers, 
   FaCalendarTimes, 
   FaMoneyBillWave, 
-  FaUserClock 
+  FaUserClock ,
+  FaBuilding,
+  FaBriefcase
 } from 'react-icons/fa'; // İkonları import ediyoruz
 
 
@@ -17,6 +19,8 @@ import PayrollList from '../components/PayrollList/PayrollList';
 import AttendanceList from "../components/AttendanceList/AttendanceList";
 import useFetchEmployees from "../hooks/useFetchEmployees";
 import Weather from "./Weather";  
+import DepartmentList from "../components/DepartmentList/DepartmentList";
+import JobPositionList  from "../components/JobPositionList/JobPositionList"; 
 
 export default function AdminDashboard() {
    const user = JSON.parse(localStorage.getItem("user"));
@@ -28,7 +32,7 @@ const handleLogout = async () => {
     try {
       const token = localStorage.getItem("token");
 
-      // Backend logout endpoint çağrısı (opsiyonel)
+      // Backend logout endpoint çağrısı
       await fetch("https://localhost:7269/api/auth/logout", {
         method: "POST",
         headers: {
@@ -36,11 +40,9 @@ const handleLogout = async () => {
         },
       });
 
-      // Frontend’den token ve kullanıcı bilgilerini temizle
       localStorage.removeItem("token");
       localStorage.removeItem("user");
 
-      // Login sayfasına yönlendir
       window.location.href = "/";
     } catch (err) {
       console.error("Logout sırasında hata oluştu:", err);
@@ -52,8 +54,9 @@ const handleLogout = async () => {
     { name: "Employees", icon: <FaUsers /> },
     { name: "Leave Requests", icon: <FaCalendarTimes /> },
     { name: "Payrolls", icon: <FaMoneyBillWave /> },
-    { name: "Attendances", icon: <FaUserClock /> }
-   
+    { name: "Attendances", icon: <FaUserClock /> },
+    { name: "Departments", icon: <FaBuilding /> },
+    { name: "Job Positions", icon: <FaBriefcase /> }
   ];
 
   return (
@@ -66,7 +69,7 @@ const handleLogout = async () => {
             <ul>
               <li><a href="/">Ana Sayfa</a></li>
               <li><a href="/settings">Ayarlar</a></li>
-              <div className="user-info">Hoşgeldin, {user?.username}</div>
+              <div className="user-info">{user?.username}</div>
               <button 
           onClick={handleLogout} 
           style={{
@@ -107,16 +110,15 @@ const handleLogout = async () => {
           {/* Main Content */}
           <div className="main-content">
             <div className="content">
-   <div className="card users">
+   <div className="card revenue">
   <h3>Toplam Çalışan Sayısı</h3>
   {loading ? <p>Yükleniyor...</p> : <p>{totalEmployees.totalEmployees}</p>}
 </div>
-<div className="card orders">
+<div className="card revenue">
   <h3>İzinli Çalışan Sayısı</h3>
   {loading ? <p>Yükleniyor...</p> : <p>{onLeaveEmployees.totalEmployees}</p>}
 </div>
-{/* {error && <p style={{ color: "red" }}>
-  Hata: {error}</p>} */}
+
 
               <div className="card revenue">
                 <h3>Hava Durumu</h3>
@@ -126,7 +128,7 @@ const handleLogout = async () => {
             <br></br>
             {activeItem === "Home Page" && (
             <div>
-              <h2>Hoşgeldiniz, {user?.username}!</h2>
+              <h2>HOŞGELDİNİZ !</h2>
               <p>İK Portaline giriş yaptınız. Sol menüden işlemlerinizi seçebilirsiniz.</p>
             </div>
           )}
@@ -145,6 +147,14 @@ const handleLogout = async () => {
 
           {activeItem === "Attendances" && (
             <AttendanceList />
+          )}
+
+           {activeItem === "Departments" && (
+            <DepartmentList />
+          )}
+
+            {activeItem === "Job Positions" && (
+            <JobPositionList />
           )}
           </div>
         </div>

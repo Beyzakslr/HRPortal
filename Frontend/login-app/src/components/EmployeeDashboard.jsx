@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-//import './App.css/'; // Oluşturduğumuz CSS dosyasını import ediyoruz
 import { 
   FaHome, 
   FaUsers, 

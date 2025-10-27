@@ -8,6 +8,8 @@ namespace HRPortal.Application.DTOs.JobPosition
 {
     public class JobPositionUpdateDto
     {
+
+        public Guid Id { get; set; }
         public string Title { get; set; } = string.Empty;
         public decimal Salary { get; set; }
     }

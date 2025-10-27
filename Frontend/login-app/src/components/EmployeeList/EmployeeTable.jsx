@@ -1,4 +1,4 @@
-import React from 'react';
+import React from 'react';  
 import styles from './EmployeeList.module.css';
 
 const EmployeeTable = ({ employees, onEdit, onDelete }) => {

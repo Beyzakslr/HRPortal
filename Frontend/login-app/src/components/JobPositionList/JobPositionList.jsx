@@ -1,90 +1,89 @@
 import React, { useState } from "react";
 import axios from "axios";
-import useFetchEmployees from "../../hooks/useFetchEmployees";
-import EmployeeTable from "./EmployeeTable";
-import EmployeeForm from "./EmployeeForm";
-import styles from "./EmployeeList.module.css";
+import useFetchJobPositions from "../../hooks/useFetchJobPositions"; 
+import JobPositionTable from "./JobPositionTable";
+import JobPositionForm from "./JobPositionForm";
+import styles from "./JobPositionList.module.css"; 
 
-const EmployeeList = () => {
-  const { employees, loading, error } = useFetchEmployees();
-  const [selectedEmployee, setSelectedEmployee] = useState(null);
-  const [showModal, setShowModal] = useState(false);
+const JobPositionList = () => {
   const [refresh, setRefresh] = useState(false);
+  const { jobPositions, loading, error } = useFetchJobPositions(refresh);
+  
+  const [showModal, setShowModal] = useState(false);
+  const [selectedJobPosition, setSelectedJobPosition] = useState(null);
 
   const handleAdd = () => {
-    setSelectedEmployee(null); // yeni çalışan
+    setSelectedJobPosition(null); // yeni pozisyon
     setShowModal(true);
   };
 
-  const handleEdit = (employee) => {
-    setSelectedEmployee(employee);
+  const handleEdit = (position) => { 
+    setSelectedJobPosition(position);
     setShowModal(true);
   };
 
   const handleCloseModal = () => {
     setShowModal(false);
+    setSelectedJobPosition(null);
   };
 
-
-const handleDelete = async (id) => {
-    const confirm = window.confirm("Bu çalışanı silmek istediğine emin misin?");
+  const handleDelete = async (id) => {
+    const confirm = window.confirm("Bu pozisyonu silmek istediğine emin misin?");
     if (!confirm) return;
 
     const token = localStorage.getItem("token");
-    
     if (!token) {
       alert("Yetkilendirme hatası: Token bulunamadı. Lütfen giriş yapın.");
       return;
     }
     
     try {
-      await axios.delete(`https://localhost:7269/api/Employees/${id}`, {
+      // API ADRESİ: /api/JobPosition olduğunu varsayıyorum
+      await axios.delete(`https://localhost:7269/api/JobPosition/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
         data: {} 
       });
 
-      alert("Çalışan başarıyla silindi!");
-      setRefresh(!refresh);
+      alert("Pozisyon başarıyla silindi!");
+      setRefresh(!refresh); 
       
     } catch (err) {
       console.error("Silme Hatası:", err);
       if (err.response?.status === 401) {
         alert("Silme işlemi başarısız: Yetkiniz yok veya oturum süreniz doldu!");
       } else {
-        alert(`Silme işlemi başarısız! Hata: ${err.response?.statusText || err.message} (Kod: ${err.response?.status || 'Bilinmiyor'})`);
+        alert(`Silme işlemi başarısız! Hata: ${err.response?.statusText || err.message}`);
       }
     }
   };
 
   if (loading) return <div className={styles.statusMessage}>Yükleniyor...</div>;
-  if (error) return <div className={styles.statusMessageError}>{error}</div>;
+  if (error) return <div className={styles.statusMessageError}>Hata: {error}</div>;
 
   return (
-    <div className={styles.employeeListContainer}>
-      {/* Header + Add Button */}
+    <div className={styles.employeeListContainer}> {/* Bu stil adını değiştirebilirsiniz */}
+      
       <div className={styles.headerContainer}>
-        <h2>Çalışan Listesi</h2>
+        <h2>Pozisyon Listesi</h2>
         <button className={styles.addButton} onClick={handleAdd}>
-          Çalışan Ekle
+          Pozisyon Ekle
         </button>
       </div>
 
-      {/* Tablo */}
-      <EmployeeTable
-        employees={employees}
+      <JobPositionTable
+        jobPositions={jobPositions}
         onEdit={handleEdit}
         onDelete={handleDelete}
       />
 
-      {/* Modal */}
       {showModal && (
         <div className={styles.modalBackdrop}>
           <div className={styles.modalContent}>
             <button className={styles.closeButton} onClick={handleCloseModal}>
               &times;
             </button>
-            <EmployeeForm
-              selectedEmployee={selectedEmployee}
+            <JobPositionForm
+              selectedJobPosition={selectedJobPosition}
               onSuccess={() => {
                 setRefresh(!refresh);
                 handleCloseModal();
@@ -96,4 +95,5 @@ const handleDelete = async (id) => {
     </div>
   );
 };
-export default EmployeeList;
+
+export default JobPositionList;

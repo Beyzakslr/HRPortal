@@ -1,8 +1,6 @@
-/* Google'dan modern bir font import edelim */
+
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
-/* === DEĞİŞKENLER VE TEMEL AYARLAR === */
-/* Renkleri ve ayarları tek bir yerden yönetmek için değişkenler (custom properties) kullanalım */
 .form-container {
   width: 100%;
   max-width: 400px;
@@ -95,7 +93,7 @@ body {
 
 .dashboard {
   display: flex;
-  flex-grow: 1; /* Header ve Footer arasında kalan tüm alanı kaplamasını sağlar */
+  flex-grow: 1; 
 }
 
 /* === HEADER === */
@@ -190,7 +188,7 @@ body {
 /* === MAIN CONTENT & CARDS === */
 .main-content {
   flex: 1;
-  background-color: var(--light-bg);
+  background-color: var(--card-shadow);
   padding: 30px;
   overflow-y: auto;
 }
@@ -202,7 +200,7 @@ body {
 }
 
 .card {
-  background-color: #fff;
+  background-color: #f6f2f2;
   padding: 25px;
   border-radius: 12px;
   box-shadow: var(--card-shadow);
@@ -218,9 +216,9 @@ body {
 .card h3 {
   margin-top: 0;
   margin-bottom: 15px;
-  font-size: 1rem;
+  font-size: 1.5rem;
   font-weight: 600;
-  color: #757575;
+  color: #484848;
 }
 
 .card p {
@@ -228,6 +226,11 @@ body {
   font-size: 100%;
   font-weight: 700;
   color: var(--text-dark);
+}
+
+.card.revenue p {
+  font-size: 1.5rem;
+  color: var(--primary-);
 }
 
 /* === FOOTER === */
@@ -255,7 +258,7 @@ body {
     height: auto;
     flex-direction: row;
     padding: 0;
-    overflow-x: auto; /* Yatayda kaydırılabilir menü */
+    overflow-x: auto; 
   }
 
   .sidebar ul {
@@ -269,7 +272,7 @@ body {
     border-bottom: 4px solid transparent;
     justify-content: center;
     padding: 20px;
-    flex-shrink: 0; /* Elemanların daralmasını engelle */
+    flex-shrink: 0; 
   }
 
   .sidebar ul li:hover,
